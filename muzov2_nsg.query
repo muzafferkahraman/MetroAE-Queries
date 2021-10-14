@@ -1,0 +1,79 @@
+echo("off")
+
+nsgs = Enterprise[name="xxx"].Nsgateway.{*}
+
+
+user_data = """
+- template: NSG
+  values:
+{%- for nsg in nsgs %}
+     - nsg_aarapplicationreleasedate: {{ nsg["aarapplicationreleasedate"] }}
+     - nsg_aarapplicationversion: {{ nsg["aarapplicationversion"] }}
+     - nsg_associatedgatewaysecurityid: {{ nsg["associatedgatewaysecurityid"] }}
+     - nsg_associatedgatewaysecurityprofileid: {{ nsg["associatedgatewaysecurityprofileid"] }}
+     - nsg_associatednsginfoid: {{ nsg["associatednsginfoid"] }}
+     - nsg_associatednsgupgradeprofileid: {{ nsg["associatednsgupgradeprofileid"] }}
+     - nsg_associatedoverlaymanagementprofileid: {{ nsg["associatedoverlaymanagementprofileid"] }}
+     - nsg_autodiscgatewayid: {{ nsg["autodiscgatewayid"] }}
+     - nsg_biosreleasedate: {{ nsg["biosreleasedate"] }}
+     - nsg_biosversion: {{ nsg["biosversion"] }}
+     - nsg_bootstrapid: {{ nsg["bootstrapid"] }}
+     - nsg_bootstrapstatus: {{ nsg["bootstrapstatus"] }}
+     - nsg_configurationreloadstate: {{ nsg["configurationreloadstate"] }}
+     - nsg_configurationstatus: {{ nsg["configurationstatus"] }}
+     - nsg_configureloadbalancing: {{ nsg["configureloadbalancing"] }}
+     - nsg_controltrafficcosvalue: {{ nsg["controltrafficcosvalue"] }}
+     - nsg_controltrafficdscpvalue: {{ nsg["controltrafficdscpvalue"] }}
+     - nsg_cputype: {{ nsg["cputype"] }}
+     - nsg_creation_date: {{ nsg["creation_date"] }}
+     - nsg_datapathid: {{ nsg["datapathid"] }}
+     - nsg_derivedsshservicestate: {{ nsg["derivedsshservicestate"] }}
+     - nsg_description: {{ nsg["description"] }}
+     - nsg_enterpriseid: {{ nsg["enterpriseid"] }}
+     - nsg_family: {{ nsg["family"] }}
+     - nsg_functions: {{ nsg["functions"] }}
+     - nsg_gatewayconfigrawversion: {{ nsg["gatewayconfigrawversion"] }}
+     - nsg_gatewayconfigversion: {{ nsg["gatewayconfigversion"] }}
+     - nsg_gatewayconnected: {{ nsg["gatewayconnected"] }}
+     - nsg_id: {{ nsg["id"] }}
+     - nsg_inheritedsshservicestate: {{ nsg["inheritedsshservicestate"] }}
+     - nsg_last_updated_date: {{ nsg["last_updated_date"] }}
+     - nsg_lastconfigurationreloadtimestamp: {{ nsg["lastconfigurationreloadtimestamp"] }}
+     - nsg_libraries: {{ nsg["libraries"] }}
+     - nsg_locationid: {{ nsg["locationid"] }}
+     - nsg_macaddress: {{ nsg["macaddress"] }}
+     - nsg_name: {{ nsg["name"] }}
+     - nsg_nattraversalenabled: {{ nsg["nattraversalenabled"] }}
+     - nsg_networkacceleration: {{ nsg["networkacceleration"] }}
+     - nsg_nsgversion: {{ nsg["nsgversion"] }}
+     - nsg_operationmode: {{ nsg["operationmode"] }}
+     - nsg_operationstatus: {{ nsg["operationstatus"] }}
+     - nsg_owner: {{ nsg["owner"] }}
+     - nsg_parent_id: {{ nsg["parent_id"] }}
+     - nsg_parent_type: {{ nsg["parent_type"] }}
+     - nsg_pending: {{ nsg["pending"] }}
+     - nsg_permittedaction: {{ nsg["permittedaction"] }}
+     - nsg_personality: {{ nsg["personality"] }}
+     - nsg_productname: {{ nsg["productname"] }}
+     - nsg_redundancygroupid: {{ nsg["redundancygroupid"] }}
+     - nsg_serialnumber: {{ nsg["serialnumber"] }}
+     - nsg_sku: {{ nsg["sku"] }}
+     - nsg_sshservice: {{ nsg["sshservice"] }}
+     - nsg_sysloglevel: {{ nsg["sysloglevel"] }}
+     - nsg_systemid: {{ nsg["systemid"] }}
+     - nsg_tcpmaximumsegmentsize: {{ nsg["tcpmaximumsegmentsize"] }}
+     - nsg_tcpmssenabled: {{ nsg["tcpmssenabled"] }}
+     - nsg_templateid: {{ nsg["templateid"] }}
+     - nsg_tpmstatus: {{ nsg["tpmstatus"] }}
+     - nsg_tpmversion: {{ nsg["tpmversion"] }}
+     - nsg_tunnelshaping: {{ nsg["tunnelshaping"] }}
+     - nsg_uuid: {{ nsg["uuid"] }}
+     - nsg_vsdaarapplicationversion: {{ nsg["vsdaarapplicationversion"] }}
+     - nsg_zfbmatchattribute: {{ nsg["zfbmatchattribute"] }}
+     - nsg_zfbmatchvalue: {{ nsg["zfbmatchvalue"] }}
+{% endfor %}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

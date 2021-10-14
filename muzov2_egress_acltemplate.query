@@ -1,0 +1,35 @@
+echo("off")
+
+policies = Enterprise[name="xxx"].Domain[%group=name].EgressACLTemplate.{*}
+
+user_data = """
+- template: EgressACLTemplate
+  values:
+
+{%- for policylist in policies %}
+{%- for EgressACLTemplate in policylist[1] %}
+     - EgressACLTemplate_active: {{ EgressACLTemplate["active"] }}
+     - EgressACLTemplate_associatedliveentityid: {{ EgressACLTemplate["associatedliveentityid"] }}
+     - EgressACLTemplate_associatedvirtualfirewallpolicyid: {{ EgressACLTemplate["associatedvirtualfirewallpolicyid"] }}
+     - EgressACLTemplate_autogeneratepriority: {{ EgressACLTemplate["autogeneratepriority"] }}
+     - EgressACLTemplate_creation_date: {{ EgressACLTemplate["creation_date"] }}
+     - EgressACLTemplate_defaultallowip: {{ EgressACLTemplate["defaultallowip"] }}
+     - EgressACLTemplate_defaultallownonip: {{ EgressACLTemplate["defaultallownonip"] }}
+     - EgressACLTemplate_defaultinstallaclimplicitrules: {{ EgressACLTemplate["defaultinstallaclimplicitrules"] }}
+     - EgressACLTemplate_description: {{ EgressACLTemplate["description"] }}
+     - EgressACLTemplate_id: {{ EgressACLTemplate["id"] }}
+     - EgressACLTemplate_last_updated_date: {{ EgressACLTemplate["last_updated_date"] }}
+     - EgressACLTemplate_name: {{ EgressACLTemplate["name"] }}
+     - EgressACLTemplate_owner: {{ EgressACLTemplate["owner"] }}
+     - EgressACLTemplate_parent_id: {{ EgressACLTemplate["parent_id"] }}
+     - EgressACLTemplate_parent_type: {{ EgressACLTemplate["parent_type"] }}
+     - EgressACLTemplate_policystate: {{ EgressACLTemplate["policystate"] }}
+     - EgressACLTemplate_priority: {{ EgressACLTemplate["priority"] }}
+     - EgressACLTemplate_prioritytype: {{ EgressACLTemplate["prioritytype"] }}
+{% endfor -%}
+{% endfor -%}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

@@ -1,0 +1,60 @@
+echo("off")
+
+rules = Enterprise[name="xxx"].Domain[%group=name].IngressACLEntryTemplate.{*}
+
+user_data = """
+- template: IngressACLEntryTemplate
+  values:
+
+{%- for rulelist in rules %}
+{%- for IngressACLEntryTemplate in rulelist[1] %}
+     - IngressACLEntryTemplate_acltemplatename: {{ IngressACLEntryTemplate["acltemplatename"] }}
+     - IngressACLEntryTemplate_action: {{ IngressACLEntryTemplate["action"] }}
+     - IngressACLEntryTemplate_addressoverride: {{ IngressACLEntryTemplate["addressoverride"] }}
+     - IngressACLEntryTemplate_associatedl7applicationsignatureid: {{ IngressACLEntryTemplate["associatedl7applicationsignatureid"] }}
+     - IngressACLEntryTemplate_associatedliveentityid: {{ IngressACLEntryTemplate["associatedliveentityid"] }}
+     - IngressACLEntryTemplate_associatedlivetemplateid: {{ IngressACLEntryTemplate["associatedlivetemplateid"] }}
+     - IngressACLEntryTemplate_associatedtraffictype: {{ IngressACLEntryTemplate["associatedtraffictype"] }}
+     - IngressACLEntryTemplate_associatedtraffictypeid: {{ IngressACLEntryTemplate["associatedtraffictypeid"] }}
+     - IngressACLEntryTemplate_associatedvirtualfirewallruleid: {{ IngressACLEntryTemplate["associatedvirtualfirewallruleid"] }}
+     - IngressACLEntryTemplate_creation_date: {{ IngressACLEntryTemplate["creation_date"] }}
+     - IngressACLEntryTemplate_description: {{ IngressACLEntryTemplate["description"] }}
+     - IngressACLEntryTemplate_destinationport: {{ IngressACLEntryTemplate["destinationport"] }}
+     - IngressACLEntryTemplate_domainname: {{ IngressACLEntryTemplate["domainname"] }}
+     - IngressACLEntryTemplate_dscp: {{ IngressACLEntryTemplate["dscp"] }}
+     - IngressACLEntryTemplate_enterprisename: {{ IngressACLEntryTemplate["enterprisename"] }}
+     - IngressACLEntryTemplate_ethertype: {{ IngressACLEntryTemplate["ethertype"] }}
+     - IngressACLEntryTemplate_flowloggingenabled: {{ IngressACLEntryTemplate["flowloggingenabled"] }}
+     - IngressACLEntryTemplate_icmpcode: {{ IngressACLEntryTemplate["icmpcode"] }}
+     - IngressACLEntryTemplate_icmptype: {{ IngressACLEntryTemplate["icmptype"] }}
+     - IngressACLEntryTemplate_id: {{ IngressACLEntryTemplate["id"] }}
+     - IngressACLEntryTemplate_ipv6addressoverride: {{ IngressACLEntryTemplate["ipv6addressoverride"] }}
+     - IngressACLEntryTemplate_last_updated_date: {{ IngressACLEntryTemplate["last_updated_date"] }}
+     - IngressACLEntryTemplate_locationid: {{ IngressACLEntryTemplate["locationid"] }}
+     - IngressACLEntryTemplate_locationtype: {{ IngressACLEntryTemplate["locationtype"] }}
+     - IngressACLEntryTemplate_mirrordestinationgroupid: {{ IngressACLEntryTemplate["mirrordestinationgroupid"] }}
+     - IngressACLEntryTemplate_mirrordestinationid: {{ IngressACLEntryTemplate["mirrordestinationid"] }}
+     - IngressACLEntryTemplate_networkid: {{ IngressACLEntryTemplate["networkid"] }}
+     - IngressACLEntryTemplate_networktype: {{ IngressACLEntryTemplate["networktype"] }}
+     - IngressACLEntryTemplate_overlaymirrordestinationid: {{ IngressACLEntryTemplate["overlaymirrordestinationid"] }}
+     - IngressACLEntryTemplate_owner: {{ IngressACLEntryTemplate["owner"] }}
+     - IngressACLEntryTemplate_parent_id: {{ IngressACLEntryTemplate["parent_id"] }}
+     - IngressACLEntryTemplate_parent_type: {{ IngressACLEntryTemplate["parent_type"] }}
+     - IngressACLEntryTemplate_policystate: {{ IngressACLEntryTemplate["policystate"] }}
+     - IngressACLEntryTemplate_priority: {{ IngressACLEntryTemplate["priority"] }}
+     - IngressACLEntryTemplate_protocol: {{ IngressACLEntryTemplate["protocol"] }}
+     - IngressACLEntryTemplate_sourceport: {{ IngressACLEntryTemplate["sourceport"] }}
+     - IngressACLEntryTemplate_stateful: {{ IngressACLEntryTemplate["stateful"] }}
+     - IngressACLEntryTemplate_statsid: {{ IngressACLEntryTemplate["statsid"] }}
+     - IngressACLEntryTemplate_statsloggingenabled: {{ IngressACLEntryTemplate["statsloggingenabled"] }}
+     - IngressACLEntryTemplate_webfilterid: {{ IngressACLEntryTemplate["webfilterid"] }}
+     - IngressACLEntryTemplate_webfilterstatsloggingenabled: {{ IngressACLEntryTemplate["webfilterstatsloggingenabled"] }}
+     - IngressACLEntryTemplate_webfiltertype: {{ IngressACLEntryTemplate["webfiltertype"] }}
+{% endfor -%}
+{% endfor -%}
+
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

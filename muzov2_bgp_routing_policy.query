@@ -1,0 +1,27 @@
+echo("off")
+
+routingpolicies = Enterprise[name="xxx"].routingpolicy.{*}
+
+user_data = """
+- template: Routing Policy
+  values:
+
+{%- for routingpolicy in routingpolicies %}
+     - routingpolicy_contenttype: {{ routingpolicy["contenttype"] }}
+     - routingpolicy_creation_date: {{ routingpolicy["creation_date"] }}
+     - routingpolicy_defaultaction: {{ routingpolicy["defaultaction"] }}
+     - routingpolicy_description: {{ routingpolicy["description"] }}
+     - routingpolicy_id: {{ routingpolicy["id"] }}
+     - routingpolicy_last_updated_date: {{ routingpolicy["last_updated_date"] }}
+     - routingpolicy_name: {{ routingpolicy["name"] }}
+     - routingpolicy_owner: {{ routingpolicy["owner"] }}
+     - routingpolicy_parent_id: {{ routingpolicy["parent_id"] }}
+     - routingpolicy_parent_type: {{ routingpolicy["parent_type"] }}
+     - routingpolicy_policydefinition: {{ routingpolicy["policydefinition"] }}
+     - routingpolicy_routingprotocol: {{ routingpolicy["routingprotocol"] }}
+{% endfor -%}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

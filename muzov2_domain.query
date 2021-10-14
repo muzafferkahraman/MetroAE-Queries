@@ -1,0 +1,77 @@
+echo("off")
+
+domains = Enterprise[name="xxx"].Domain.{*}
+
+user_data = """
+- template: L3 Domain
+  values:
+{%- for domain in domains %}
+     - domain_advertisecriteria: {{ domain["advertisecriteria"] }}
+     - domain_aggregateflowsenabled: {{ domain["aggregateflowsenabled"] }}
+     - domain_aggregationflowtype: {{ domain["aggregationflowtype"] }}
+     - domain_associatedbgpprofileid: {{ domain["associatedbgpprofileid"] }}
+     - domain_associatedmulticastchannelmapid: {{ domain["associatedmulticastchannelmapid"] }}
+     - domain_associatedpatmapperid: {{ domain["associatedpatmapperid"] }}
+     - domain_associatedsharedpatmapperid: {{ domain["associatedsharedpatmapperid"] }}
+     - domain_associatedunderlayid: {{ domain["associatedunderlayid"] }}
+     - domain_backhaulroutedistinguisher: {{ domain["backhaulroutedistinguisher"] }}
+     - domain_backhaulroutetarget: {{ domain["backhaulroutetarget"] }}
+     - domain_backhaulserviceid: {{ domain["backhaulserviceid"] }}
+     - domain_backhaulvnid: {{ domain["backhaulvnid"] }}
+     - domain_bgpenabled: {{ domain["bgpenabled"] }}
+     - domain_color: {{ domain["color"] }}
+     - domain_createbackhaulsubnet: {{ domain["createbackhaulsubnet"] }}
+     - domain_creation_date: {{ domain["creation_date"] }}
+     - domain_customerid: {{ domain["customerid"] }}
+     - domain_description: {{ domain["description"] }}
+     - domain_dhcpbehavior: {{ domain["dhcpbehavior"] }}
+     - domain_dhcpserveraddress: {{ domain["dhcpserveraddress"] }}
+     - domain_dhcpserveraddresses: {{ domain["dhcpserveraddresses"] }}
+     - domain_domainaggregationenabled: {{ domain["domainaggregationenabled"] }}
+     - domain_domainid: {{ domain["domainid"] }}
+     - domain_domainvlanid: {{ domain["domainvlanid"] }}
+     - domain_dpi: {{ domain["dpi"] }}
+     - domain_ecmpcount: {{ domain["ecmpcount"] }}
+     - domain_encryption: {{ domain["encryption"] }}
+     - domain_enterpriseid: {{ domain["enterpriseid"] }}
+     - domain_evpnrt5type: {{ domain["evpnrt5type"] }}
+     - domain_exportroutetarget: {{ domain["exportroutetarget"] }}
+     - domain_externallabel: {{ domain["externallabel"] }}
+     - domain_fipignoredefaultroute: {{ domain["fipignoredefaultroute"] }}
+     - domain_fipunderlay: {{ domain["fipunderlay"] }}
+     - domain_flowcollectionenabled: {{ domain["flowcollectionenabled"] }}
+     - domain_globalroutingenabled: {{ domain["globalroutingenabled"] }}
+     - domain_grtenabled: {{ domain["grtenabled"] }}
+     - domain_id: {{ domain["id"] }}
+     - domain_importroutetarget: {{ domain["importroutetarget"] }}
+     - domain_labelid: {{ domain["labelid"] }}
+     - domain_last_updated_date: {{ domain["last_updated_date"] }}
+     - domain_leakingenabled: {{ domain["leakingenabled"] }}
+     - domain_localas: {{ domain["localas"] }}
+     - domain_maintenancemode: {{ domain["maintenancemode"] }}
+     - domain_multicast: {{ domain["multicast"] }}
+     - domain_name: {{ domain["name"] }}
+     - domain_owner: {{ domain["owner"] }}
+     - domain_parent_id: {{ domain["parent_id"] }}
+     - domain_parent_type: {{ domain["parent_type"] }}
+     - domain_patenabled: {{ domain["patenabled"] }}
+     - domain_permittedaction: {{ domain["permittedaction"] }}
+     - domain_policychangestatus: {{ domain["policychangestatus"] }}
+     - domain_routedistinguisher: {{ domain["routedistinguisher"] }}
+     - domain_routetarget: {{ domain["routetarget"] }}
+     - domain_secondarydhcpserveraddress: {{ domain["secondarydhcpserveraddress"] }}
+     - domain_secondaryroutetarget: {{ domain["secondaryroutetarget"] }}
+     - domain_serviceid: {{ domain["serviceid"] }}
+     - domain_stretched: {{ domain["stretched"] }}
+     - domain_templateid: {{ domain["templateid"] }}
+     - domain_tunneltype: {{ domain["tunneltype"] }}
+     - domain_underlayenabled: {{ domain["underlayenabled"] }}
+     - domain_uplinkpreference: {{ domain["uplinkpreference"] }}
+     - domain_vxlanecmpenabled: {{ domain["vxlanecmpenabled"] }}
+{% endfor -%}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+
+

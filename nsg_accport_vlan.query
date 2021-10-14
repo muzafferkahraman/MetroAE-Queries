@@ -1,0 +1,94 @@
+# Query for discovering NSPort objects for template NSG Access Port user-data from VSD
+
+# Data for discovery_helper
+
+# template: NSG Access Port
+# type: NSPort
+# values: null
+#
+echo("off")
+debug = "off"
+echo($debug)
+
+ns_ports = Enterprise[%group=name].NSGateway[%group=name].NSPort.{*}
+# WARNING: Store variable egress_qos_policy_id_19 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_18 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_20 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_13 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_12 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_11 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_10 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_17 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_16 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_15 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_14 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_3 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_2 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_1 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_21 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_7 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_6 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_5 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_4 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_9 does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id_8 does not map to NSPort object
+
+user_data = """
+ - template: NSG Access Port
+   values:
+{%- for enterprise in ns_ports %}
+{%- for ns_gateway in enterprise[1] %}
+{%- for ns_port in ns_gateway[1] %}
+    -
+      enterprise_name: {{ enterprise[0] }}
+      nsg_name: {{ ns_gateway[0] }}
+{%- if ns_port["description"] != None %}
+      description: {{ ns_port["description"] }}
+{%- endif %}
+{%- if ns_port["physicalname"] != None %}
+      physical_name: {{ ns_port["physicalname"] }}
+{%- endif %}
+{%- if ns_port["mtu"] != None %}
+      mtu: {{ ns_port["mtu"] }}
+{%- endif %}
+{%- if ns_port["vlanrange"] != None %}
+      vlan_range: {{ ns_port["vlanrange"] }}
+{%- endif %}
+      # WARNING: No variable for NSPort.portType
+{%- if ns_port["speed"] != None %}
+      speed: {{ ns_port["speed"] }}
+{%- endif %}
+{%- if ns_port["name"] != None %}
+      nsg_access_port_name: {{ ns_port["name"] }}
+{%- endif %}
+    # WARNING: retrieve for id egress_qos_policy_id_19 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_18 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_20 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_13 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_12 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_11 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_10 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_17 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_16 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_15 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_14 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_3 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_2 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_1 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_21 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_7 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_6 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_5 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_4 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_9 not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id_8 not in NSPort object
+{% endfor -%}
+{% endfor -%}
+{% endfor %}
+# WARNING: variable nsg_template_name not found
+# WARNING: variable egress_qos_policy_names not found
+# WARNING: variable vlan_values not found
+"""
+
+echo("on")
+render_yaml_template($user_data)

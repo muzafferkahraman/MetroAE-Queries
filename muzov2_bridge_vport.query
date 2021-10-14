@@ -1,0 +1,68 @@
+echo("off")
+
+subnets = Enterprise[name="xxx"].Domain[%group=name].Vport.{*}
+
+
+user_data = """
+- template: Vport
+  values:
+{%- for subnet in subnets %}
+  {%- for vport in subnet[1] %}
+    {% if vport["type"] == "BRIDGE" %}
+     - vport_accessrestrictionenabled {{ vport["accessrestrictionenabled"] }}
+     - vport_active {{ vport["active"] }}
+     - vport_addressspoofing  {{ vport["addressspoofing"] }}
+     - vport_assocentityid  {{ vport["assocentityid"] }}
+     - vport_associatedegressprofileid  {{ vport["associatedegressprofileid"] }}
+     - vport_associatedfloatingipid  {{ vport["associatedfloatingipid"] }}
+     - vport_associatedgatewayid  {{ vport["associatedgatewayid"] }}
+     - vport_associatedgatewaypersonality  {{ vport["associatedgatewaypersonality"] }}
+     - vport_associatedgatewaytype  {{ vport["associatedgatewaytype"] }}
+     - vport_associatedingressprofileid  {{ vport["associatedingressprofileid"] }}
+     - vport_associatedmulticastchannelmapid  {{ vport["associatedmulticastchannelmapid"] }}
+     - vport_associatedsendmulticastchannelmapid  {{ vport["associatedsendmulticastchannelmapid"] }}
+     - vport_associatedssid  {{ vport["associatedssid"] }}
+     - vport_associatedtrunkid  {{ vport["associatedtrunkid"] }}
+     - vport_backhaulsubnetvnid  {{ vport["backhaulsubnetvnid"] }}
+     - vport_color  {{ vport["color"] }}
+     - vport_creation_date  {{ vport["creation_date"] }}
+     - vport_description  {{ vport["description"] }}
+     - vport_domainid  {{ vport["domainid"] }}
+     - vport_domainservicelabel  {{ vport["domainservicelabel"] }}
+     - vport_domainvlanid  {{ vport["domainvlanid"] }}
+     - vport_dpi  {{ vport["dpi"] }}
+     - vport_fipignoredefaultroute  {{ vport["fipignoredefaultroute"] }}
+     - vport_gatewayportname  {{ vport["gatewayportname"] }}
+     - vport_gatewaymacmoverole  {{ vport["gatewaymacmoverole"] }}
+     - vport_gweligible  {{ vport["gweligible"] }}
+     - vport_hasattachedinterfaces  {{ vport["hasattachedinterfaces"] }}
+     - vport_id  {{ vport["id"] }}
+     - vport_last_updated_date  {{ vport["last_updated_date"] }}
+     - vport_multicast  {{ vport["multicast"] }}
+     - vport_multinicvportid  {{ vport["multinicvportid"] }}
+     - vport_name  {{ vport["name"] }}
+     - vport_operationalstate  {{ vport["operationalstate"] }}
+     - vport_owner  {{ vport["owner"] }}
+     - vport_parent_id {{ vport["parent_id"] }}
+     - vport_parent_type  {{ vport["parent_type"] }}
+     - vport_peeroperationalstate  {{ vport["peeroperationalstate"] }}
+     - vport_segmentationid  {{ vport["segmentationid"] }}
+     - vport_segmentationtype  {{ vport["segmentationtype"] }}
+     - vport_serviceid  {{ vport["serviceid"] }}
+     - vport_subnetvnid  {{ vport["subnetvnid"] }}
+     - vport_subtype  {{ vport["subtype"] }}
+     - vport_systemtype  {{ vport["systemtype"] }}
+     - vport_trunkrole  {{ vport["trunkrole"] }}
+     - vport_type  {{ vport["type"] }}
+     - vport_vlan  {{ vport["vlan"] }}
+     - vport_vlanid  {{ vport["vlanid"] }}
+     - vport_zoneid  {{ vport["zoneid"] }}
+{%- endif -%}
+{% endfor %}
+{% endfor %}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+
+

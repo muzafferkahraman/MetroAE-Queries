@@ -1,0 +1,36 @@
+echo("off")
+
+patnatpools = Enterprise[name="xxx"].patnatpool.{*}
+
+user_data = """
+- template: PATNAT Pools
+  values:
+
+{%- for patnatpool in patnatpools %}
+     - patnatpool_addressrange: {{ patnatpool["addressrange"] }}
+     - patnatpool_associatedgatewayid: {{ patnatpool["associatedgatewayid"] }}
+     - patnatpool_associatedgatewaytype: {{ patnatpool["associatedgatewaytype"] }}
+     - patnatpool_associatedsubnetid: {{ patnatpool["associatedsubnetid"] }}
+     - patnatpool_associatedvlanid: {{ patnatpool["associatedvlanid"] }}
+     - patnatpool_creation_date: {{ patnatpool["creation_date"] }}
+     - patnatpool_defaultpatip: {{ patnatpool["defaultpatip"] }}
+     - patnatpool_description: {{ patnatpool["description"] }}
+     - patnatpool_dynamicsourceenabled: {{ patnatpool["dynamicsourceenabled"] }}
+     - patnatpool_endaddressrange: {{ patnatpool["endaddressrange"] }}
+     - patnatpool_endsourceaddress: {{ patnatpool["endsourceaddress"] }}
+     - patnatpool_id: {{ patnatpool["id"] }}
+     - patnatpool_iptype: {{ patnatpool["iptype"] }}
+     - patnatpool_last_updated_date: {{ patnatpool["last_updated_date"] }}
+     - patnatpool_name: {{ patnatpool["name"] }}
+     - patnatpool_owner: {{ patnatpool["owner"] }}
+     - patnatpool_parent_id: {{ patnatpool["parent_id"] }}
+     - patnatpool_parent_type: {{ patnatpool["parent_type"] }}
+     - patnatpool_permittedaction: {{ patnatpool["permittedaction"] }}
+     - patnatpool_startaddressrange: {{ patnatpool["startaddressrange"] }}
+     - patnatpool_startsourceaddress: {{ patnatpool["startsourceaddress"] }}
+{% endfor -%}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

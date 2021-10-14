@@ -1,0 +1,35 @@
+echo("off")
+
+zones = Enterprise[name="xxx"].Domain[%group=name].Zone.{*}
+user_data = """
+- template: Zone
+  values:
+{%- for zonelist in zones %}
+  {%- for zone in zonelist[1] %}
+     - zone_address: {{ zone["address"] }}
+     - zone_associatedmulticastchannelmapid: {{ zone["associatedmulticastchannelmapid"] }}
+     - zone_creation_date: {{ zone["creation_date"] }}
+     - zone_description: {{ zone["description"] }}
+     - zone_dpi: {{ zone["dpi"] }}
+     - zone_encryption: {{ zone["encryption"] }}
+     - zone_id: {{ zone["id"] }}
+     - zone_iptype: {{ zone["iptype"] }}
+     - zone_ipv6address: {{ zone["ipv6address"] }}
+     - zone_last_updated_date: {{ zone["last_updated_date"] }}
+     - zone_maintenancemode: {{ zone["maintenancemode"] }}
+     - zone_multicast: {{ zone["multicast"] }}
+     - zone_name: {{ zone["name"] }}
+     - zone_netmask: {{ zone["netmask"] }}
+     - zone_numberofhostsinsubnets: {{ zone["numberofhostsinsubnets"] }}
+     - zone_owner: {{ zone["owner"] }}
+     - zone_parent_id: {{ zone["parent_id"] }}
+     - zone_parent_type: {{ zone["parent_type"] }}
+     - zone_policygroupid: {{ zone["policygroupid"] }}
+     - zone_publiczone: {{ zone["publiczone"] }}
+     - zone_templateid: {{ zone["templateid"] }}
+{% endfor %}
+{% endfor %}
+"""
+echo("on")
+render_yaml_template($user_data)
+

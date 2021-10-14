@@ -1,0 +1,67 @@
+# Query for discovering NSPort objects for template NSG Network Port user-data from VSD
+
+# Data for discovery_helper
+
+# template: NSG Network Port
+# type: NSPort
+# values: null
+#
+echo("off")
+debug = "off"
+echo($debug)
+
+ns_ports = Enterprise[%group=name].NSGateway[%group=name].NSPort.{*}
+# WARNING: Store variable underlay_id does not map to NSPort object
+# WARNING: Store variable egress_qos_policy_id does not map to NSPort object
+# WARNING: Store variable ingress_qos_policy_id does not map to NSPort object
+# WARNING: Store variable infrastructure_vsc_profile_id does not map to NSPort object
+
+user_data = """
+ - template: NSG Network Port
+   values:
+{%- for enterprise in ns_ports %}
+{%- for ns_gateway in enterprise[1] %}
+{%- for ns_port in ns_gateway[1] %}
+    -
+      enterprise_name: {{ enterprise[0] }}
+      nsg_name: {{ ns_gateway[0] }}
+{%- if ns_port["description"] != None %}
+      description: {{ ns_port["description"] }}
+{%- endif %}
+{%- if ns_port["physicalname"] != None %}
+      physical_name: {{ ns_port["physicalname"] }}
+{%- endif %}
+{%- if ns_port["mtu"] != None %}
+      mtu: {{ ns_port["mtu"] }}
+{%- endif %}
+{%- if ns_port["vlanrange"] != None %}
+      vlan_range: {{ ns_port["vlanrange"] }}
+{%- endif %}
+      # WARNING: No variable for NSPort.portType
+{%- if ns_port["speed"] != None %}
+      speed: {{ ns_port["speed"] }}
+{%- endif %}
+{%- if ns_port["name"] != None %}
+      nsg_network_port_name: {{ ns_port["name"] }}
+{%- endif %}
+    # WARNING: retrieve for id underlay_id not in NSPort object
+    # WARNING: retrieve for id egress_qos_policy_id not in NSPort object
+    # WARNING: retrieve for id ingress_qos_policy_id not in NSPort object
+    # WARNING: retrieve for id infrastructure_vsc_profile_id not in NSPort object
+{% endfor -%}
+{% endfor -%}
+{% endfor %}
+# WARNING: variable nat_enabled not found
+# WARNING: variable route_to_underlay not found
+# WARNING: variable vlan_value not found
+# WARNING: variable nsg_template_name not found
+# WARNING: variable egress_qos_policy_name not found
+# WARNING: variable download_rate_limit not found
+# WARNING: variable infrastructure_vsc_profile_name not found
+# WARNING: variable underlay_name not found
+# WARNING: variable ingress_qos_policy_name not found
+# WARNING: variable uplink_role not found
+"""
+
+echo("on")
+render_yaml_template($user_data)

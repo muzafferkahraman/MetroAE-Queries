@@ -1,0 +1,67 @@
+echo("off")
+
+subnets = Enterprise[name="xxx"].Domain[%group=name].Subnet.{*}
+
+
+user_data = """
+- template: Subnet
+  values:
+{%- for subneta in subnets %}
+  {%- for subnet in subneta [1] %}
+     - subnet_accessrestrictionenabled: {{ subnet["accessrestrictionenabled"] }}
+     - subnet_address: {{ subnet["address"] }}
+     - subnet_advertise: {{ subnet["advertise"] }}
+     - subnet_associatedmulticastchannelmapid: {{ subnet["associatedmulticastchannelmapid"] }}
+     - subnet_color: {{ subnet["color"] }}
+     - subnet_creation_date: {{ subnet["creation_date"] }}
+     - subnet_customerid: {{ subnet["customerid"] }}
+     - subnet_description: {{ subnet["description"] }}
+     - subnet_dhcprelaystatus: {{ subnet["dhcprelaystatus"] }}
+     - subnet_domainservicelabel: {{ subnet["domainservicelabel"] }}
+     - subnet_dpi: {{ subnet["dpi"] }}
+     - subnet_dualstackdynamicipallocation: {{ subnet["dualstackdynamicipallocation"] }}
+     - subnet_enabledhcpv4: {{ subnet["enabledhcpv4"] }}
+     - subnet_enabledhcpv6: {{ subnet["enabledhcpv6"] }}
+     - subnet_encryption: {{ subnet["encryption"] }}
+     - subnet_entitystate: {{ subnet["entitystate"] }}
+     - subnet_evpnenabled: {{ subnet["evpnenabled"] }}
+     - subnet_gateway: {{ subnet["gateway"] }}
+     - subnet_gatewaymacaddress: {{ subnet["gatewaymacaddress"] }}
+     - subnet_id: {{ subnet["id"] }}
+     - subnet_ingressreplicationenabled: {{ subnet["ingressreplicationenabled"] }}
+     - subnet_iptype: {{ subnet["iptype"] }}
+     - subnet_ipv6address: {{ subnet["ipv6address"] }}
+     - subnet_ipv6gateway: {{ subnet["ipv6gateway"] }}
+     - subnet_last_updated_date: {{ subnet["last_updated_date"] }}
+     - subnet_linklocaladdress: {{ subnet["linklocaladdress"] }}
+     - subnet_maintenancemode: {{ subnet["maintenancemode"] }}
+     - subnet_multicast: {{ subnet["multicast"] }}
+     - subnet_multihomeenabled: {{ subnet["multihomeenabled"] }}
+     - subnet_name: {{ subnet["name"] }}
+     - subnet_netmask: {{ subnet["netmask"] }}
+     - subnet_owner: {{ subnet["owner"] }}
+     - subnet_parent_id: {{ subnet["parent_id"] }}
+     - subnet_parent_type: {{ subnet["parent_type"] }}
+     - subnet_patenabled: {{ subnet["patenabled"] }}
+     - subnet_policygroupid: {{ subnet["policygroupid"] }}
+     - subnet_proxyarp: {{ subnet["proxyarp"] }}
+     - subnet_public: {{ subnet["public"] }}
+     - subnet_resourcetype: {{ subnet["resourcetype"] }}
+     - subnet_routedistinguisher: {{ subnet["routedistinguisher"] }}
+     - subnet_routetarget: {{ subnet["routetarget"] }}
+     - subnet_serviceid: {{ subnet["serviceid"] }}
+     - subnet_splitsubnet: {{ subnet["splitsubnet"] }}
+     - subnet_subnetvlanid: {{ subnet["subnetvlanid"] }}
+     - subnet_templateid: {{ subnet["templateid"] }}
+     - subnet_underlay: {{ subnet["underlay"] }}
+     - subnet_underlayenabled: {{ subnet["underlayenabled"] }}
+     - subnet_useglobalmac: {{ subnet["useglobalmac"] }}
+     - subnet_vnid: {{ subnet["vnid"] }}
+     - subnet_vrrpipv6backupaddress: {{ subnet["vrrpipv6backupaddress"] }}
+{% endfor %}
+{% endfor %}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

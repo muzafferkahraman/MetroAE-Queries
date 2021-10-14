@@ -1,0 +1,42 @@
+# Query for discovering RoutingPolicy objects for template Routing Policy user-data from VSD
+
+# Data for discovery_helper
+
+# template: Routing Policy
+# type: RoutingPolicy
+# values: null
+#
+echo("off")
+debug = "off"
+echo($debug)
+
+routing_policys = Enterprise[%group=name].RoutingPolicy.{*}
+
+user_data = """
+ - template: Routing Policy
+   values:
+{%- for enterprise in routing_policys %}
+{%- for routing_policy in enterprise[1] %}
+    -
+      enterprise_name: {{ enterprise[0] }}
+{%- if routing_policy["defaultaction"] != None %}
+      default_action: {{ routing_policy["defaultaction"] }}
+{%- endif %}
+{%- if routing_policy["policydefinition"] != None %}
+      policy_definition_xml: {{ routing_policy["policydefinition"] }}
+{%- endif %}
+{%- if routing_policy["contenttype"] != None %}
+      content_type: {{ routing_policy["contenttype"] }}
+{%- endif %}
+{%- if routing_policy["name"] != None %}
+      routing_policy_name: {{ routing_policy["name"] }}
+{%- endif %}
+{%- if routing_policy["description"] != None %}
+      description: {{ routing_policy["description"] }}
+{%- endif %}
+{% endfor -%}
+{% endfor %}
+"""
+
+echo("on")
+render_yaml_template($user_data)

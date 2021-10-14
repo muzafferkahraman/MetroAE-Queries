@@ -1,0 +1,36 @@
+echo("off")
+
+policies = Enterprise[name="xxx"].Domain[%group=name].IngressACLTemplate.{*}
+
+user_data = """
+- template: IngressACLTemplate
+  values:
+
+{%- for policylist in policies %}
+{%- for IngressACLTemplate in policylist[1] %}
+     - IngressACLTemplate_active: {{ IngressACLTemplate["active"] }}
+     - IngressACLTemplate_allowaddressspoof: {{ IngressACLTemplate["allowaddressspoof"] }}
+     - IngressACLTemplate_associatedliveentityid: {{ IngressACLTemplate["associatedliveentityid"] }}
+     - IngressACLTemplate_associatedvirtualfirewallpolicyid: {{ IngressACLTemplate["associatedvirtualfirewallpolicyid"] }}
+     - IngressACLTemplate_autogeneratepriority: {{ IngressACLTemplate["autogeneratepriority"] }}
+     - IngressACLTemplate_creation_date: {{ IngressACLTemplate["creation_date"] }}
+     - IngressACLTemplate_defaultallowip: {{ IngressACLTemplate["defaultallowip"] }}
+     - IngressACLTemplate_defaultallownonip: {{ IngressACLTemplate["defaultallownonip"] }}
+     - IngressACLTemplate_description: {{ IngressACLTemplate["description"] }}
+     - IngressACLTemplate_id: {{ IngressACLTemplate["id"] }}
+     - IngressACLTemplate_last_updated_date: {{ IngressACLTemplate["last_updated_date"] }}
+     - IngressACLTemplate_name: {{ IngressACLTemplate["name"] }}
+     - IngressACLTemplate_owner: {{ IngressACLTemplate["owner"] }}
+     - IngressACLTemplate_parent_id: {{ IngressACLTemplate["parent_id"] }}
+     - IngressACLTemplate_parent_type: {{ IngressACLTemplate["parent_type"] }}
+     - IngressACLTemplate_policystate: {{ IngressACLTemplate["policystate"] }}
+     - IngressACLTemplate_priority: {{ IngressACLTemplate["priority"] }}
+     - IngressACLTemplate_prioritytype: {{ IngressACLTemplate["prioritytype"] }}
+{% endfor -%}
+{% endfor -%}
+
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

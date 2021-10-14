@@ -1,0 +1,99 @@
+
+# Query for discovering BGPNeighbor objects for template Bgp Neighbor user-data from VSD
+
+# Data for discovery_helper
+
+# template: Bgp Neighbor
+# type: BGPNeighbor
+# values: null
+#
+echo("off")
+debug = "off"
+echo($debug)
+
+bgp_neighbors = Enterprise[%group=name].Domain[%group=name].Zone[%group=name].Subnet[%group=name].Vport[%group=name].BGPNeighbor.{*}
+vsg_vports = Gateway[%group=name].Port[%group=name].Vlan.{*}
+export_routing_policy_ids = Enterprise.RoutingPolicy.id
+routing_policys = Enterprise[%group=name].RoutingPolicy[id=$export_routing_policy_ids].{*}
+import_routing_policy_ids = Enterprise.RoutingPolicy.id
+routing_policys = Enterprise[%group=name].RoutingPolicy[id=$import_routing_policy_ids].{*}
+
+user_data = """
+ - template: Bgp Neighbor
+   values:
+{%- for enterprise in bgp_neighbors %}
+{%- for domain in enterprise[1] %}
+{%- for zone in domain[1] %}
+{%- for subnet in zone[1] %}
+{%- for vport in subnet[1] %}
+{%- for bgp_neighbor in vport[1] %}
+    -
+      enterprise_name: {{ enterprise[0] }}
+      domain_name: {{ domain[0] }}
+      zone_name: {{ zone[0] }}
+      subnet_name: {{ subnet[0] }}
+{%- for gateway in vsg_vports %}
+{%- for port in gateway[1] %}
+{%- for vlan in port[1] %}
+{%- if vlan[vportID] == vport[id] %}
+      deployment_type = VSG
+      gateway_name = {{ gateway[0] }}
+      port_name = {{ port[0] }}
+      vlan_value = {{ vlan[0] }}
+{%- endif -%}
+{%- endfor -%}
+{%- endfor -%}
+{%- endfor -%}
+
+      # WARNING: No variable for BGPNeighbor.IPType
+{%- if bgp_neighbor["ipv6address"] != None %}
+      peer_address: {{ bgp_neighbor["ipv6address"] }}
+{%- endif %}
+{%- if bgp_neighbor["peerIP"] != None %}
+      peer_address: {{ bgp_neighbor["peerIP"] }}
+{%- endif %}
+{%- if bgp_neighbor["peeras"] != None %}
+      peer_as: {{ bgp_neighbor["peeras"] }}
+{%- endif %}
+{%- if bgp_neighbor["description"] != None %}
+      description: {{ bgp_neighbor["description"] }}
+{%- endif %}
+{%- if bgp_neighbor["session"] != None %}
+      session_xml: {{ bgp_neighbor["session"] }}
+{%- endif %}
+{%- if bgp_neighbor["dampeningenabled"] != None %}
+      dampening_enabled: {{ bgp_neighbor["dampeningenabled"] }}
+{%- endif %}
+{%- if bgp_neighbor["bfdenabled"] != None %}
+      bfd_enabled: {{ bgp_neighbor["bfdenabled"] }}
+{%- endif %}
+{%- if bgp_neighbor["name"] != None %}
+      bgp_neighbor_name: {{ bgp_neighbor["name"] }}
+{%- endif %}
+{%- for inner_enterprise in routing_policys -%}
+{%- for inner_routing_policy in inner_enterprise[1] -%}
+{%- if bgp_neighbor["associatedexportroutingpolicyid"] == inner_routing_policy["id"] %}
+      export_routing_policy_name: {{ inner_routing_policy[0] }}
+{%- endif -%}
+{%- endfor -%}
+{%- endfor -%}
+{%- for inner_enterprise in routing_policys -%}
+{%- for inner_routing_policy in inner_enterprise[1] -%}
+{%- if bgp_neighbor["associatedimportroutingpolicyid"] == inner_routing_policy["id"] %}
+      import_routing_policy_name: {{ inner_routing_policy[0] }}
+{%- endif -%}
+{%- endfor -%}
+{%- endfor -%}
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}
+{% endfor %}
+# WARNING: variable vport_uuid not found
+# WARNING: variable match_ipv4_address not found
+# WARNING: variable match_mac_address not found
+
+"""
+
+echo("on")
+render_yaml_template($user_data)

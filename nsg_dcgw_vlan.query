@@ -1,0 +1,47 @@
+# Query for discovering Vlan objects for template DC Gateway Vlan user-data from VSD
+
+# Data for discovery_helper
+
+# template: DC Gateway Vlan
+# type: Vlan
+# values: null
+#
+echo("off")
+debug = "off"
+echo($debug)
+
+vlans = Gateway[%group=name].Port[%group=name].Vlan.{*}
+# WARNING: Store variable enterprise_id does not map to Vlan object
+
+user_data = """
+ - template: DC Gateway Vlan
+   values:
+{%- for gateway in vlans %}
+{%- for port in gateway[1] %}
+{%- for vlan in port[1] %}
+    -
+      gateway_name: {{ gateway[0] }}
+      port_name: {{ port[0] }}
+{%- if vlan["description"] != None %}
+      description: {{ vlan["description"] }}
+{%- endif %}
+      # WARNING: No variable for Vlan.value
+    # WARNING: retrieve for id enterprise_id not in Vlan object
+{% endfor -%}
+{% endfor -%}
+{% endfor %}
+# WARNING: variable vlan_enterprise_name not found
+# WARNING: variable access_vlan_values not found
+"""
+
+echo("on")
+render_yaml_template($user_data)
+
+
+
+
+
+
+
+
+

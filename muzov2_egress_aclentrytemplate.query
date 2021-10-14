@@ -1,0 +1,59 @@
+echo("off")
+
+rules = Enterprise[name="xxx"].Domain[%group=name].EgressACLEntryTemplate.{*}
+
+user_data = """
+- template: EgressACLEntryTemplate 
+  values:
+
+{%- for rulelist in rules %}
+{%- for EgressACLEntryTemplate in rulelist[1] %}
+     - EgressACLEntryTemplate_acltemplatename: {{ EgressACLEntryTemplate["acltemplatename"] }}
+     - EgressACLEntryTemplate_action: {{ EgressACLEntryTemplate["action"] }}
+     - EgressACLEntryTemplate_addressoverride: {{ EgressACLEntryTemplate["addressoverride"] }}
+     - EgressACLEntryTemplate_associatedl7applicationsignatureid: {{ EgressACLEntryTemplate["associatedl7applicationsignatureid"] }}
+     - EgressACLEntryTemplate_associatedliveentityid: {{ EgressACLEntryTemplate["associatedliveentityid"] }}
+     - EgressACLEntryTemplate_associatedlivetemplateid: {{ EgressACLEntryTemplate["associatedlivetemplateid"] }}
+     - EgressACLEntryTemplate_associatedtraffictype: {{ EgressACLEntryTemplate["associatedtraffictype"] }}
+     - EgressACLEntryTemplate_associatedtraffictypeid: {{ EgressACLEntryTemplate["associatedtraffictypeid"] }}
+     - EgressACLEntryTemplate_associatedvirtualfirewallruleid: {{ EgressACLEntryTemplate["associatedvirtualfirewallruleid"] }}
+     - EgressACLEntryTemplate_creation_date: {{ EgressACLEntryTemplate["creation_date"] }}
+     - EgressACLEntryTemplate_description: {{ EgressACLEntryTemplate["description"] }}
+     - EgressACLEntryTemplate_destinationport: {{ EgressACLEntryTemplate["destinationport"] }}
+     - EgressACLEntryTemplate_domainname: {{ EgressACLEntryTemplate["domainname"] }}
+     - EgressACLEntryTemplate_dscp: {{ EgressACLEntryTemplate["dscp"] }}
+     - EgressACLEntryTemplate_enterprisename: {{ EgressACLEntryTemplate["enterprisename"] }}
+     - EgressACLEntryTemplate_ethertype: {{ EgressACLEntryTemplate["ethertype"] }}
+     - EgressACLEntryTemplate_flowloggingenabled: {{ EgressACLEntryTemplate["flowloggingenabled"] }}
+     - EgressACLEntryTemplate_icmpcode: {{ EgressACLEntryTemplate["icmpcode"] }}
+     - EgressACLEntryTemplate_icmptype: {{ EgressACLEntryTemplate["icmptype"] }}
+     - EgressACLEntryTemplate_id: {{ EgressACLEntryTemplate["id"] }}
+     - EgressACLEntryTemplate_ipv6addressoverride: {{ EgressACLEntryTemplate["ipv6addressoverride"] }}
+     - EgressACLEntryTemplate_last_updated_date: {{ EgressACLEntryTemplate["last_updated_date"] }}
+     - EgressACLEntryTemplate_locationid: {{ EgressACLEntryTemplate["locationid"] }}
+     - EgressACLEntryTemplate_locationtype: {{ EgressACLEntryTemplate["locationtype"] }}
+     - EgressACLEntryTemplate_mirrordestinationgroupid: {{ EgressACLEntryTemplate["mirrordestinationgroupid"] }}
+     - EgressACLEntryTemplate_mirrordestinationid: {{ EgressACLEntryTemplate["mirrordestinationid"] }}
+     - EgressACLEntryTemplate_networkid: {{ EgressACLEntryTemplate["networkid"] }}
+     - EgressACLEntryTemplate_networktype: {{ EgressACLEntryTemplate["networktype"] }}
+     - EgressACLEntryTemplate_owner: {{ EgressACLEntryTemplate["owner"] }}
+     - EgressACLEntryTemplate_parent_id: {{ EgressACLEntryTemplate["parent_id"] }}
+     - EgressACLEntryTemplate_parent_type: {{ EgressACLEntryTemplate["parent_type"] }}
+     - EgressACLEntryTemplate_policystate: {{ EgressACLEntryTemplate["policystate"] }}
+     - EgressACLEntryTemplate_priority: {{ EgressACLEntryTemplate["priority"] }}
+     - EgressACLEntryTemplate_protocol: {{ EgressACLEntryTemplate["protocol"] }}
+     - EgressACLEntryTemplate_sourceport: {{ EgressACLEntryTemplate["sourceport"] }}
+     - EgressACLEntryTemplate_stateful: {{ EgressACLEntryTemplate["stateful"] }}
+     - EgressACLEntryTemplate_statsid: {{ EgressACLEntryTemplate["statsid"] }}
+     - EgressACLEntryTemplate_statsloggingenabled: {{ EgressACLEntryTemplate["statsloggingenabled"] }}
+     - EgressACLEntryTemplate_webfilterid: {{ EgressACLEntryTemplate["webfilterid"] }}
+     - EgressACLEntryTemplate_webfilterstatsloggingenabled: {{ EgressACLEntryTemplate["webfilterstatsloggingenabled"] }}
+     - EgressACLEntryTemplate_webfiltertype: {{ EgressACLEntryTemplate["webfiltertype"] }}
+{% endfor -%}
+{% endfor -%}
+
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

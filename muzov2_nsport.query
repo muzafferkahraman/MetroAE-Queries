@@ -1,0 +1,40 @@
+echo("off")
+
+nsports = Enterprise[name="xxx"].Nsgateway[%group=name].Nsport.{*}
+
+user_data = """
+- template: NSPort
+  values:
+
+{%- for nsporta in nsports %}
+{%- for nsport in nsporta[1] %}
+     - nsport_associatedegressqospolicyid: {{ nsport["associatedegressqospolicyid"] }}
+     - nsport_associatedredundantportid: {{ nsport["associatedredundantportid"] }}
+     - nsport_creation_date: {{ nsport["creation_date"] }}
+     - nsport_description: {{ nsport["description"] }}
+     - nsport_enablenatprobes: {{ nsport["enablenatprobes"] }}
+     - nsport_id: {{ nsport["id"] }}
+     - nsport_last_updated_date: {{ nsport["last_updated_date"] }}
+     - nsport_mtu: {{ nsport["mtu"] }}
+     - nsport_name: {{ nsport["name"] }}
+     - nsport_owner: {{ nsport["owner"] }}
+     - nsport_parent_id: {{ nsport["parent_id"] }}
+     - nsport_parent_type: {{ nsport["parent_type"] }}
+     - nsport_permittedaction: {{ nsport["permittedaction"] }}
+     - nsport_physicalname: {{ nsport["physicalname"] }}
+     - nsport_porttype: {{ nsport["porttype"] }}
+     - nsport_shuntport: {{ nsport["shuntport"] }}
+     - nsport_speed: {{ nsport["speed"] }}
+     - nsport_status: {{ nsport["status"] }}
+     - nsport_templateid: {{ nsport["templateid"] }}
+     - nsport_trafficthroughubronly: {{ nsport["trafficthroughubronly"] }}
+     - nsport_usermnemonic: {{ nsport["usermnemonic"] }}
+     - nsport_useusermnemonic: {{ nsport["useusermnemonic"] }}
+     - nsport_vlanrange: {{ nsport["vlanrange"] }}
+{% endfor -%}
+{% endfor -%}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

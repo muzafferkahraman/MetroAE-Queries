@@ -1,0 +1,41 @@
+echo("off")
+
+bgpneighbors = Enterprise[name="xxx"].Domain[%group=name].Subnet[%group=name].bgpneighbor.{*}
+
+user_data = """
+- template: BGP Neighbors
+
+  values:
+
+{%- for bgpneighborlist in bgpneighbors %}
+{%- for bgpneighbora in bgpneighborlist[1] %}
+{%- for bgpneighbor in bgpneighbora[1] %}
+     - bgpneighbor_associatedexportroutingpolicyid: {{ bgpneighbor["associatedexportroutingpolicyid"] }}
+     - bgpneighbor_associatedimportroutingpolicyid: {{ bgpneighbor["associatedimportroutingpolicyid"] }}
+     - bgpneighbor_bfdenabled {{ bgpneighbor["bfdenabled"] }}
+     - bgpneighbor_creation_date: {{ bgpneighbor["creation_date"] }}
+     - bgpneighbor_dampeningenabled: {{ bgpneighbor["dampeningenabled"] }}
+     - bgpneighbor_description: {{ bgpneighbor["description"] }}
+     - bgpneighbor_domainservicelabel: {{ bgpneighbor["domainservicelabel"] }}
+     - bgpneighbor_id: {{ bgpneighbor["id"] }}
+     - bgpneighbor_iptype: {{ bgpneighbor["iptype"] }}
+     - bgpneighbor_ipv6address: {{ bgpneighbor["ipv6address"] }}
+     - bgpneighbor_last_updated_date: {{ bgpneighbor["last_updated_date"] }}
+     - bgpneighbor_name: {{ bgpneighbor["name"] }}
+     - bgpneighbor_owner: {{ bgpneighbor["owner"] }}
+     - bgpneighbor_parent_id: {{ bgpneighbor["parent_id"] }}
+     - bgpneighbor_parent_id: {{ bgpneighbor["parent_id"] }}
+     - bgpneighbor_parent_type: {{ bgpneighbor["parent_type"] }}
+     - bgpneighbor_peeras: {{ bgpneighbor["peeras"] }}
+     - bgpneighbor_peerconfiguration: {{ bgpneighbor["peerconfiguration"] }}
+     - bgpneighbor_peerip: {{ bgpneighbor["peerip"] }}
+     - bgpneighbor_session: {{ bgpneighbor["session"] }}
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}
+
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

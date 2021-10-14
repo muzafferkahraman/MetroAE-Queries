@@ -1,0 +1,55 @@
+echo("off")
+
+enterprises = Enterprise.{*}
+
+user_data = """
+- template: Enterprise
+  values:
+{%- for enterprise in enterprises %}
+{% if enterprise["name"] not in ["Audit Enterprise", "Shared Infrastructure", "CSP", "_vnsportal_templates"] %}
+    - enterprise_allowadvancedqosconfiguration: {{ enterprise["allowadvancedqosconfiguration"] }}
+    - enterprise_allowedforwardingmode: {{ enterprise["allowedforwardingmode"] }}
+    - enterprise_allowgatewaymanagement: {{ enterprise["allowgatewaymanagement"] }}
+    - enterprise_allowtrustedforwardingclass: {{ enterprise["allowtrustedforwardingclass"] }}
+    - enterprise_associatedenterprisesecurityid: {{ enterprise["associatedenterprisesecurityid"] }}
+    - enterprise_associatedgroupkeyencryptionprofileid: {{ enterprise["associatedgroupkeyencryptionprofileid"] }}
+    - enterprise_associatedkeyservermonitorid: {{ enterprise["associatedkeyservermonitorid"] }}
+    - enterprise_avatardata: {{ enterprise["avatardata"] }}
+    - enterprise_avatartype: {{ enterprise["avatartype"] }}
+    - enterprise_bgpenabled: {{ enterprise["bgpenabled"] }}
+    - enterprise_creation_date: {{ enterprise["creation_date"] }}
+    - enterprise_customerid: {{ enterprise["customerid"] }}
+    - enterprise_description: {{ enterprise["description"] }}
+    - enterprise_dhcpleaseinterval: {{ enterprise["dhcpleaseinterval"] }}
+    - enterprise_dictionaryversion: {{ enterprise["dictionaryversion"] }}
+    - enterprise_enableapplicationperformancemanagement: {{ enterprise["enableapplicationperformancemanagement"] }}
+    - enterprise_encryptionmanagementmode: {{ enterprise["encryptionmanagementmode"] }}
+    - enterprise_enterpriseprofileid: {{ enterprise["enterpriseprofileid"] }}
+    - enterprise_floatingipsquota: {{ enterprise["floatingipsquota"] }}
+    - enterprise_floatingipsused: {{ enterprise["floatingipsused"] }} 
+    - enterprise_flowcollectionenabled: {{ enterprise["flowcollectionenabled"] }}
+    - enterprise_forwardingclass: {{ enterprise["forwardingclass"][0]["forwardingClass"] }}
+    - enterprise_forwardingclass: {{ enterprise["forwardingclass"][0]["loadBalancing"] }}
+    - enterprise_id: {{ enterprise["id"] }}
+    - enterprise_last_updated_date: {{ enterprise["last_updated_date"] }}
+    - enterprise_ldapauthorizationenabled: {{ enterprise["ldapauthorizationenabled"] }}
+    - enterprise_ldapenabled: {{ enterprise["ldapenabled"] }}
+    - enterprise_localas: {{ enterprise["localas"] }}
+    - enterprise_name: {{ enterprise["name"] }}
+    - enterprise_owner: {{ enterprise["owner"] }}    
+    - enterprise_parent_id: {{ enterprise["parent_id"] }}
+    - enterprise_parent_type: {{ enterprise["parent_type"] }}
+    - enterprise_receivemulticastlistid: {{ enterprise["receivemulticastlistid"] }}
+    - enterprise_sendmulticastlistid: {{ enterprise["sendmulticastlistid"] }}
+    - enterprise_sharedenterprise: {{ enterprise["sharedenterprise"] }}
+    - enterprise_useglobalmac: {{ enterprise["useglobalmac"] }}
+    - enterprise_virtualfirewallrulesenabled: {{ enterprise["virtualfirewallrulesenabled"] }}
+    - enterprise_vnfmanagementenabled: {{ enterprise["vnfmanagementenabled"] }}
+    - enterprise_webfilterenabled: {{ enterprise["webfilterenabled"] }}
+{%- endif -%}
+{% endfor %}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

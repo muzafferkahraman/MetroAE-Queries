@@ -1,0 +1,48 @@
+echo("off")
+
+vlans = Enterprise[name="xxx"].Nsgateway[%group=name].Nsport[%group=name].vlan.{*}
+
+user_data = """
+- template: NSPort
+  values:
+
+{%- for nsporta in vlans %}
+{%- for nsportb in nsporta[1] %}
+{%- for vlan in nsportb[1] %}
+     - vlan_associatedbgpprofileid: {{ vlan["associatedbgpprofileid"] }}
+     - vlan_associatedconnectiontype: {{ vlan["associatedconnectiontype"] }}
+     - vlan_associatedegressqospolicyid: {{ vlan["associatedegressqospolicyid"] }}
+     - vlan_associatedingressoverlayqospolicerid: {{ vlan["associatedingressoverlayqospolicerid"] }}
+     - vlan_associatedingressqospolicyid: {{ vlan["associatedingressqospolicyid"] }}
+     - vlan_associatedingressunderlayqospolicerid: {{ vlan["associatedingressunderlayqospolicerid"] }}
+     - vlan_associateduplinkconnectionid: {{ vlan["associateduplinkconnectionid"] }}
+     - vlan_associatedvscprofileid: {{ vlan["associatedvscprofileid"] }}
+     - vlan_creation_date: {{ vlan["creation_date"] }}
+     - vlan_description: {{ vlan["description"] }}
+     - vlan_ducvlan: {{ vlan["ducvlan"] }}
+     - vlan_gatewayid: {{ vlan["gatewayid"] }}
+     - vlan_id: {{ vlan["id"] }}
+     - vlan_isuplink: {{ vlan["isuplink"] }}
+     - vlan_last_updated_date: {{ vlan["last_updated_date"] }}
+     - vlan_owner: {{ vlan["owner"] }}
+     - vlan_parent_id: {{ vlan["parent_id"] }}
+     - vlan_parent_type: {{ vlan["parent_type"] }}
+     - vlan_permittedaction: {{ vlan["permittedaction"] }}
+     - vlan_readonly: {{ vlan["readonly"] }}
+     - vlan_restricted: {{ vlan["restricted"] }}
+     - vlan_shuntvlan: {{ vlan["shuntvlan"] }}
+     - vlan_status: {{ vlan["status"] }}
+     - vlan_templateid: {{ vlan["templateid"] }}
+     - vlan_type: {{ vlan["type"] }}
+     - vlan_usermnemonic: {{ vlan["usermnemonic"] }}
+     - vlan_useusermnemonic: {{ vlan["useusermnemonic"] }}
+     - vlan_value: {{ vlan["value"] }}
+     - vlan_vportid: {{ vlan["vportid"] }}
+{% endfor -%}
+{% endfor -%}
+{% endfor -%}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

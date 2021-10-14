@@ -1,0 +1,37 @@
+echo("off")
+
+staticroutes = Enterprise[name="xxx"].Domain[%group=name].StaticRoute.{*}
+
+user_data = """
+- template: Static Routes
+  values:
+
+{%- for staticroutelist in staticroutes %}
+{%- for staticroute in staticroutelist[1] %}
+     - staticroute_address: {{ staticroute["address"] }}
+     - staticroute_associatedgatewayids: {{ staticroute["associatedgatewayids"] }}
+     - staticroute_associatedsubnetid: {{ staticroute["associatedsubnetid"] }}
+     - staticroute_bfdenabled: {{ staticroute["bfdenabled"] }}
+     - staticroute_blackholeenabled: {{ staticroute["blackholeenabled"] }}
+     - staticroute_creation_date: {{ staticroute["creation_date"] }}
+     - staticroute_id: {{ staticroute["id"] }}
+     - staticroute_iptype: {{ staticroute["iptype"] }}
+     - staticroute_ipv6address: {{ staticroute["ipv6address"] }}
+     - staticroute_last_updated_date: {{ staticroute["last_updated_date"] }}
+     - staticroute_netmask: {{ staticroute["netmask"] }}
+     - staticroute_nexthopip: {{ staticroute["nexthopip"] }}
+     - staticroute_owner: {{ staticroute["owner"] }}
+     - staticroute_parent_id: {{ staticroute["parent_id"] }}
+     - staticroute_parent_type: {{ staticroute["parent_type"] }}
+     - staticroute_routedistinguisher: {{ staticroute["routedistinguisher"] }}
+     - staticroute_type: {{ staticroute["type"] }}
+{% endfor -%}
+{% endfor -%}
+
+
+
+"""
+
+echo("on")
+render_yaml_template($user_data)
+

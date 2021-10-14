@@ -1,0 +1,30 @@
+echo("off")
+
+bgpprofiles = Enterprise[name="xxx"].BGPProfile.{*}
+
+user_data = """
+- template: BGP Profiles
+  values:
+
+{%- for bgpprofile in bgpprofiles %}
+     - bgpprofile_associatedexportroutingpolicyid: {{ bgpprofile["associatedexportroutingpolicyid"] }}
+     - bgpprofile_associatedimportroutingpolicyid: {{ bgpprofile["associatedimportroutingpolicyid"] }}
+     - bgpprofile_creation_date: {{ bgpprofile["creation_date"] }}
+     - bgpprofile_dampeninghalflife: {{ bgpprofile["dampeninghalflife"] }}
+     - bgpprofile_dampeningmaxsuppress: {{ bgpprofile["dampeningmaxsuppress"] }}
+     - bgpprofile_dampeningname: {{ bgpprofile["dampeningname"] }}
+     - bgpprofile_dampeningreuse: {{ bgpprofile["dampeningreuse"] }}
+     - bgpprofile_dampeningsuppress: {{ bgpprofile["dampeningsuppress"] }}
+     - bgpprofile_description: {{ bgpprofile["description"] }}
+     - bgpprofile_id: {{ bgpprofile["id"] }}
+     - bgpprofile_last_updated_date: {{ bgpprofile["last_updated_date"] }}
+     - bgpprofile_name: {{ bgpprofile["name"] }}
+     - bgpprofile_owner: {{ bgpprofile["owner"] }}
+     - bgpprofile_parent_id: {{ bgpprofile["parent_id"] }}
+     - bgpprofile_parent_type: {{ bgpprofile["parent_type"] }}
+{% endfor -%}
+"""
+
+echo("on")
+render_yaml_template($user_data)
+
